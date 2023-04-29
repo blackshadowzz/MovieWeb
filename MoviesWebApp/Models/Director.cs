@@ -13,8 +13,7 @@ namespace MoviesWebApp.Models
         [Required]
         [Column(TypeName = ("nvarchar(50)"))]
         public string LastName { get; set; }
-        [ForeignKey("Gender")]
-        public int? GenderID { get ; set; }
+        public Genders? Gender { get; set; }
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
         [Column(TypeName = ("nvarchar(20)"))]
@@ -27,7 +26,7 @@ namespace MoviesWebApp.Models
         public string? Address { get; set; } 
       
 
-        public Genders? Gender { get; set; }
+
         public ICollection<MovieDirector>? MovieDirectors { get; set; }
     }
     public enum Genders
