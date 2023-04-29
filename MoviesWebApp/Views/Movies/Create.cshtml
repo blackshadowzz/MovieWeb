@@ -1,0 +1,250 @@
+﻿@model MoviesWebApp.Models.Movie
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["TitleForm"] = "Create Movie";
+    ViewData["SubNavbar"] = "movie";
+}
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ReleasedDate" class="control-label"></label>
+                                <input asp-for="ReleasedDate" class="form-control" />
+                                <span asp-validation-for="ReleasedDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Language" class="control-label"></label>
+                                <select asp-for="Language" asp-items="Html.GetEnumSelectList<MovieLanguage>()" class="form-control">
+                                    <option style="display:none;">Select Movie Language</option>
+                                </select>
+                                <span asp-validation-for="Language" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Rating" class="control-label"></label>
+                                <input asp-for="Rating" class="form-control" />
+                                <span asp-validation-for="Rating" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Budget" class="control-label"></label>
+                                <input asp-for="Budget" class="form-control" />
+                                <span asp-validation-for="Budget" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Duration" class="control-label"></label>
+                                <input asp-for="Duration" class="form-control" />
+                                <span asp-validation-for="Duration" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AgeLimited" class="control-label"></label>
+                                <input asp-for="AgeLimited" class="form-control" />
+                                <span asp-validation-for="AgeLimited" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="formFile" class="form-label">Cover Image</label>
+                            <input asp-for="FrontImage" type="file" accept="Images/*" class="form-control" id="formFile" />
+                            <span asp-validation-for="FrontImage" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="formFile" class="form-label">Cover Image</label>
+                            <input asp-for="BackImage" type="file" accept="Images/*" class="form-control" id="formFile" />
+                            <span asp-validation-for="BackImage" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description">Description</label>
+                        <div class="form-floating">
+                            <textarea class="form-control" asp-for="Description" placeholder="Leave a description here" id="floatingTextarea2" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">Description</label>
+                        </div>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="" class="form-label">Movie Details</label>
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    Select Actors
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <label asp-for="MovieActors">Actors </label>
+                                    <div class="form-group">
+                                        
+                                        @foreach (var actor in ViewBag.Actors)
+                                        {
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="selectedActors" value="@actor.Value" id="inlineCheckbox1">
+                                                <label class="form-check-label" for="inlineCheckbox1">
+                                                    @actor.Text
+                                                </label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                    Select Directors
+                                </button>
+                            </h2>
+                            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <label asp-for="MovieDirectors">Directors </label>
+                                    <div class="form-group">
+                                        
+                                        @foreach (var item in ViewBag.Directors)
+                                        {
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="selectedDirectors" value="@item.Value" id="inlineCheckbox1">
+                                                <label class="form-check-label" for="inlineCheckbox1">
+                                                    @item.Text
+                                                </label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                   Select Genres
+                                </button>
+                            </h2>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <label asp-for="MovieGenres">Genres </label>
+                                    <div class="form-group">
+                                       
+                                        @foreach (var item in ViewBag.Genres)
+                                        {
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="selectedGenres" value="@item.Value" id="inlineCheckbox1">
+                                                <label class="form-check-label" for="inlineCheckbox1">
+                                                    @item.Text
+                                                </label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                                    Select Studios
+                                </button>
+                            </h2>
+                            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <label asp-for="MovieStudios">Studios </label>
+                                    <div class="form-group">
+                                       
+                                        @foreach (var item in ViewBag.Studios)
+                                        {
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="selectedStudios" value="@item.Value" id="inlineCheckbox1">
+                                                <label class="form-check-label" for="inlineCheckbox1">
+                                                    @item.Text
+                                                </label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                                    Select Countries
+                                </button>
+                            </h2>
+                            <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <label asp-for="MovieCountries">Countries </label>
+                                    <div class="form-group">
+                                       
+                                        @foreach (var item in ViewBag.Countries)
+                                        {
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="selectedCountries" value="@item.Value" id="inlineCheckbox1">
+                                                <label class="form-check-label" for="inlineCheckbox1">
+                                                    @item.Text
+                                                </label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+
+                </div>
+            </div>
+          
+            <div class="d-flex justify-content-between">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <div>
+                    <a asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,92 @@
+﻿@model IEnumerable<MoviesWebApp.Models.Movie>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["TitleForm"] = "Movies";
+    ViewData["SubNavbar"] = "movie";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+</p>
+<table class="table table-hover shadow table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleasedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Language)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Budget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgeLimited)
+            </th>
+            <th>Cover</th>
+      @*      <th>
+               Genre
+            </th>*@
+           @* <th style="width:15%;">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>*@
+            <th style="width:8%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleasedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgeLimited)
+            </td>
+                <td>
+                    <img src="~/Images/@item.CoverImage" width="30px" height="30px">
+                </td>
+       @*     <td>
+                    @foreach(var i in item?.MovieGenres)
+                    {
+                        <p>@i.Genre?.GenreName,  </p> 
+                        
+                    }
+            </td>*@
+@*            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>*@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MovieId" class="bi bi-pen"></a> |
+                <a asp-action="Details" asp-route-id="@item.MovieId" class="bi bi-eye"></a> |
+                <a asp-action="Delete" asp-route-id="@item.MovieId" class="bi bi-trash"></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

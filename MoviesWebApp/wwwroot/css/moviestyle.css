@@ -1,0 +1,10 @@
+﻿.card-container {
+    width: 80%;
+    justify-content: center;
+    margin: auto;
+}
+.card-over {
+
+    background-color:antiquewhite;
+    margin-top: -10%;
+}

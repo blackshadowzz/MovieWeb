@@ -1,0 +1,113 @@
+﻿@model MoviesWebApp.Models.Movie
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["TitleForm"] = "Detail Movie";
+    ViewData["SubNavbar"] = "movie";
+}
+
+<div>
+    <div class="card mb-3">
+        <img src="~/Images/@Model.BackCoverImage" class="" height="400px" width="auto" alt="...">
+        <div class="card-body">
+            <div class="card-container">
+                <div class="card-over">
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <div class="col-md-3">
+                                <img src="~/Images/@Model.CoverImage" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-9">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div>
+                                            <h3 class="">@Model.Title</h3>
+                                            <h5>Rating: @Model.Rating</h5>
+                                        </div>
+                                       
+                                        <div class="col-md-6">
+                                           
+                                            <div style="margin-top:10%">
+                                                <div>
+                                                    <h5>Releared Data : @Model.ReleasedDate</h5>
+                                                </div>
+                                                <div>
+                                                    <h5>Actors : 
+                                                        @foreach(var a in Model.MovieActors)
+                                                        {
+                                                            <a>@a.Actor.FirstName @a.Actor.LastName, </a>
+                                                        }
+                                                    </h5>
+                                                </div>
+                                                <div>
+                                                    <h5>
+                                                        Directors :
+                                                        @foreach (var a in Model.MovieDirectors)
+                                                        {
+                                                            <a>@a.Director.FirstName @a.Director.LastName, </a>
+                                                        }
+                                                    </h5>
+                                                </div>
+                                                <div>
+                                                    <h5>
+                                                        Genres :
+                                                        @foreach (var a in Model.MovieGenres)
+                                                        {
+                                                            <a>@a.Genre.GenreName, </a>
+                                                        }
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div style="margin-top:20%">
+                                                <div>
+                                                    <h5>Duration : @Model.Duration</h5>
+                                                </div>
+                                                <div>
+                                                    <h5>Duration : @Model.Language</h5>
+                                                </div>
+                                                <div>
+                                                    <h5>
+                                                        Countries :
+                                                        @foreach (var c in Model.MovieCountries)
+                                                        {
+                                                            <a>@c.Country.CountryName, </a>
+                                                        }
+                                                    </h5>
+                                                </div>
+                                                <div>
+                                                    <h5>
+                                                        Production :
+                                                        @foreach (var a in Model.MovieStudios)
+                                                        {
+                                                            <a>@a.Studio.Name, </a>
+                                                        }
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    <h5>Description</h5>
+                    <div>
+                        @Model.Description
+                    </div>
+                
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-between">
+    <a asp-action="Edit" asp-route-id="@Model?.MovieId" class="btn btn-outline-primary">Edit</a> 
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>
