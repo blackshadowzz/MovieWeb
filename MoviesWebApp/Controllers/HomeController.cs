@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MoviesWebApp.Data;
 using MoviesWebApp.Models;
@@ -6,6 +7,7 @@ using System.Diagnostics;
 
 namespace MoviesWebApp.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly MovieDbContext _context;

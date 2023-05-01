@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MoviesWebApp.Data;
 
 namespace MoviesWebApp.Controllers
 {
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly MovieDbContext _dbContext;
