@@ -5,6 +5,7 @@ namespace MoviesWebApp.Data
 {
     public class MovieDbContext : DbContext
     {
+
         public MovieDbContext(DbContextOptions<MovieDbContext> options) : base(options)
         {
            
