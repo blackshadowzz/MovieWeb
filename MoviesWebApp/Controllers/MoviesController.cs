@@ -125,6 +125,8 @@ namespace MoviesWebApp.Controllers
                     _context.Add(cou);
                 }
                 await _context.SaveChangesAsync();
+
+                TempData["success"] = "Movie has been created successfully!";
                 return RedirectToAction(nameof(Index));
             }
             PopulateGenres();
