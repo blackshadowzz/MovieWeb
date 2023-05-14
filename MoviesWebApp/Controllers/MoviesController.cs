@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MoviesWebApp.Data;
 using MoviesWebApp.Models;
@@ -24,10 +26,63 @@ namespace MoviesWebApp.Controllers
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string search,string? sortOrder, string currentFilter, int? pageNumber, int sizePage=10)
         {
-            var movies = _context.Movies.Include(g => g.MovieGenres).ThenInclude(mg => mg.Genre);
-            return View(await movies.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["PageSize"] = sizePage;
+            ViewData["pageNumber"] = pageNumber;
+            
+            ViewData["TitleSort"] = string.IsNullOrEmpty(sortOrder) ? "Title_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            if (search != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                ViewData["CurrentSort"] = sortOrder;
+                ViewData["PageSize"] = sizePage;
+                ViewData["pageNumber"] = pageNumber;
+                search = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = search;
+
+
+            var movies = from m in _context.Movies.Include(g => g.MovieGenres).ThenInclude(mg => mg.Genre) select m;
+         
+            if (!string.IsNullOrEmpty(search))
+            {
+                movies = movies.Where(x => x.Title.ToLower().Contains(search.ToLower()));
+               
+            }
+           
+            switch (sortOrder)
+            {
+                case "Title_desc":
+                    movies=movies.OrderByDescending(x => x.Title);
+                    break;
+                case "Date":
+                    movies = movies.OrderBy(s => s.ReleasedDate);
+                    break;
+                case "date_desc":
+                    movies = movies.OrderByDescending(s => s.ReleasedDate);
+                    break;
+                default:
+                    movies=movies.OrderBy(x => x.Title);
+                    break;
+            }
+            int pageSize;
+            if (sizePage != null)
+            {
+                pageSize = sizePage;
+            }
+            else
+            {
+                pageSize = 5;
+            }
+            
+            return View(await PaginatedList<Movie>.CreateAsync(movies.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
 
@@ -72,21 +127,40 @@ namespace MoviesWebApp.Controllers
             if (ModelState.IsValid)
             {
                 movie.MovieId = Guid.NewGuid();
-                string fileFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
-                string fileName = Guid.NewGuid().ToString() + "_" + movie.FrontImage.FileName;
-                string backfile = Guid.NewGuid().ToString() + "_" + movie.BackImage.FileName;
-                string filePath = Path.Combine(fileFolder, fileName);
-                string filePath2 = Path.Combine(fileFolder, backfile);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+               
+                if(movie.FrontImage != null)
                 {
-                    movie.FrontImage.CopyTo(fileStream);
+                    var frontImage = movie.FrontImage.FileName;
+
+                    string fileFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                    string fileName = Guid.NewGuid().ToString() + "_" + frontImage;
+
+                    string filePath = Path.Combine(fileFolder, fileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        movie.FrontImage.CopyTo(fileStream);
+                    }
+
+                    movie.CoverImage = fileName;
+
                 }
-                using (var fileStream2 = new FileStream(filePath2, FileMode.Create))
+                if (movie.BackImage != null)
                 {
-                    movie.BackImage.CopyTo(fileStream2);
+                    var backImage = movie.BackImage.FileName;
+                    string fileFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                
+                    string backfile = Guid.NewGuid().ToString() + "_" + backImage;
+               
+                    string filePath2 = Path.Combine(fileFolder, backfile);
+                  
+                    using (var fileStream2 = new FileStream(filePath2, FileMode.Create))
+                    {
+                        movie.BackImage.CopyTo(fileStream2);
+                    }
+                 
+                    movie.BackCoverImage = backfile;
                 }
-                movie.CoverImage = fileName;
-                movie.BackCoverImage = backfile;
                 _context.Add(movie);
 
                 foreach (var i in selectedGenres)
@@ -166,7 +240,7 @@ namespace MoviesWebApp.Controllers
 
         public async Task<IActionResult> Edit(Guid? id)
         {
-            PopulateGenres();
+            //PopulateGenres();
             //PopulateStudios();
             //PopulateActors();
             //PopulateCoutries();
@@ -176,27 +250,24 @@ namespace MoviesWebApp.Controllers
             {
                 return NotFound();
             }
-
-
-
-            var movie = await _context.Movies.Include(g=>g.MovieGenres)
+            var movie = await _context.Movies
                 .FirstOrDefaultAsync(m=>m.MovieId==id);
             if (movie == null)
             {
                 return NotFound();
             }
-            var mv = new MovieVM
-            {
-                Movie=movie,
-                Genres= await _context.Genres.ToListAsync()
-            };
-            PopSelectedLists(mv);
-            return View(mv);
+            //var mv = new MovieVM
+            //{
+            //    Movie=movie,
+            //    Genres= await _context.Genres.ToListAsync()
+            //};
+            //PopSelectedLists(mv);
+            return View(movie);
         }
-        public void PopSelectedLists(MovieVM movieVM)
-        {
-            movieVM.Genres = _context.Genres.ToList();
-        }
+        //public void PopSelectedLists(MovieVM movieVM)
+        //{
+        //    movieVM.Genres = _context.Genres.ToList();
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, Movie movie)
@@ -210,6 +281,42 @@ namespace MoviesWebApp.Controllers
             {
                 try
                 {
+                    if (movie.FrontImage != null)
+                    {
+                        var frontImage = movie.FrontImage.FileName;
+                        string fileFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                        string fileName = Guid.NewGuid().ToString() + "_" + frontImage;
+                        string filePath = Path.Combine(fileFolder, fileName);
+                        using (var fileStream = new FileStream(filePath, FileMode.CreateNew))
+                        {
+                            movie.FrontImage.CopyTo(fileStream);
+                        }
+
+                        movie.CoverImage = fileName;
+
+                    }
+                    else
+                    {
+                        movie.CoverImage = movie.CoverImage;
+                    }
+                    if (movie.BackImage != null)
+                    {
+                        var backImage = movie.BackImage.FileName;
+                        string fileFolder = Path.Combine(webHostEnvironment.WebRootPath, "Images");
+                        string backfile = Guid.NewGuid().ToString() + "_" + backImage;
+                        string filePath2 = Path.Combine(fileFolder, backfile);
+                        using (var fileStream2 = new FileStream(filePath2, FileMode.Create))
+                        {
+                            movie.BackImage.CopyTo(fileStream2);
+                        }
+
+                        movie.BackCoverImage = backfile;
+
+                    }
+                    else
+                    {
+                        movie.BackCoverImage = movie.BackCoverImage;
+                    }
                     _context.Update(movie);
                     await _context.SaveChangesAsync();
                 }
@@ -224,23 +331,24 @@ namespace MoviesWebApp.Controllers
                         throw;
                     }
                 }
+                TempData["success"] = "Movie has been edited successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(movie);
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
 
-            var movie = await _context.Movies.FindAsync(id);
-            if (movie != null)
+            var movie = await _context.Movies.FirstOrDefaultAsync(m=>m.MovieId==id);
+            if (movie == null)
             {
-                _context.Movies.Remove(movie);
+                return NotFound();
             }
-
+            _context.Movies.Remove(movie);
             await _context.SaveChangesAsync();
+            TempData["success"] = "Movie has been deleted successfully!";
             return RedirectToAction(nameof(Index));
         }
 

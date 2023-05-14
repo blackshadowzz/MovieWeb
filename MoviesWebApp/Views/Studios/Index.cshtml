@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["TitleForm"] = "Studios";
+    ViewData["SubNavbar"] = "studio";
 }
 
 
 <p>
     <a asp-action="Create" class="btn btn-outline-primary"> <i class="bi bi-plus-circle"></i> Create New</a>
 </p>
-<table class="table">
+<table class="table table-hover table-striped shadow">
     <thead>
         <tr>
             <th>
@@ -21,7 +23,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Revenue)
             </th>
-            <th></th>
+            <th style="width:15%"> Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -37,9 +39,9 @@
                 @Html.DisplayFor(modelItem => item.Revenue)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.StudioId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StudioId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StudioId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.StudioId"><i class="bi bi-pen"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.StudioId"><i class="bi bi-eye"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.StudioId"><i class="bi bi-trash"></i></a>
             </td>
         </tr>
 }
