@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MoviesWebApp.Models.Movie>
+﻿@model PaginatedList<MoviesWebApp.Models.Movie>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,32 +7,62 @@
     ViewData["SubNavbar"] = "movie";
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
-</p>
-<table class="table table-hover shadow table-bordered">
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <a asp-action="Create" class="btn btn-outline-primary"> <i class="bi bi-plus-circle"></i> Create New</a>
+    </div>
+   
+    <div>
+        <form class="d-flex" role="search" asp-controller="Movies" asp-action="Index" method="get">
+            <input class="form-control me-2" type="search" name="search" asp-route-pageNumber="@ViewData["pageNumber"]" asp-route-sizePage="@ViewData["PageSize"]" value="@ViewData["CurrentFilter"]" placeholder="Search">
+            <button class="btn btn-outline-success" value="Search" type="submit">Search</button>
+        </form>
+    </div>
+    <div>
+        <form asp-controller="Movies" class="d-flex" asp-action="Index" method="get">
+            <div class="me-2">
+                <select class="form-select" name="sizePage" aria-label="Default select example">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+
+                </select>
+            </div>
+            <div>
+                <button class="btn btn-outline-success" type="submit">Sort</button>
+            </div>
+
+
+        </form>
+
+    </div>
+   
+   
+</div>
+<table id="movieList" class="table table-hover shadow table-bordered">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                <a asp-controller="Movies" asp-action="Index" asp-route-pageNumber="@ViewData["pageNumber"]" asp-route-sizePage="@ViewData["PageSize"]" asp-route-sortOrder="@ViewData["TitleSort"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Title</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleasedDate)
+                <a asp-controller="Movies" asp-action="Index" asp-route-pageNumber="@ViewData["pageNumber"]" asp-route-sizePage="@ViewData["PageSize"]" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">ReleasedDate</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Language)
+                Language
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+                Rating
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Budget)
+                Budget
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Duration)
+                Duration
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AgeLimited)
+                AgeLimited
             </th>
             <th>Cover</th>
       @*      <th>
@@ -90,3 +120,30 @@
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var totalPage = Model.TotalPages;
+ 
+}
+
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-sizePage="@ViewData["PageSize"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a>
+    @totalPage
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-sizePage="@ViewData["PageSize"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

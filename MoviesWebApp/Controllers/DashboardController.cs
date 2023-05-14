@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MoviesWebApp.Data;
 
 namespace MoviesWebApp.Controllers
@@ -13,10 +14,12 @@ namespace MoviesWebApp.Controllers
         {
             _dbContext = dbContext;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //var gets=_dbContext
-            return View();
+            var movies = _dbContext.Movies
+              .Include(g => g.MovieGenres)
+              .ThenInclude(mg => mg.Genre);
+            return View(await movies.ToListAsync());
         }
     }
 }

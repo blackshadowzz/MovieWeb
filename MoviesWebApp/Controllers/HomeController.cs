@@ -17,13 +17,17 @@ namespace MoviesWebApp.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index(string? search=null)
         {
 
             var movies = _context.Movies
                 .Include(g => g.MovieGenres)
-                .ThenInclude(mg => mg.Genre);
-            return View(await movies.ToListAsync());
+                .ThenInclude(mg => mg.Genre).ToList();
+            if (!string.IsNullOrEmpty(search))
+            {
+                movies= movies.Where(x=>x.Title.ToLower().Contains(search.ToLower())).ToList();
+            }
+            return View(movies);
         }
         public async Task<IActionResult> Details(Guid? id)
         {

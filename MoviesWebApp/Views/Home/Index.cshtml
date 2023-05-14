@@ -7,37 +7,38 @@
     <div>
         <h4>Movies</h4>
     </div>
-    <div>
-        <div class="row row-cols-1 row-cols-md-5 g-3">
-            @foreach (var m in Model)
-            {
-                <div class="col">
-                    <div class="card">
-                        <div class="carousel-item active">
-                            <img src="~/Images/@m.CoverImage" class="card-img-top" alt="...">
-                        </div>
-                        <div class="card-body">
-                            <h6 class="card-title">
-                                <a asp-action="Details" asp-route-id="@m.MovieId" style="text-decoration:none;">
-                                    @m.Title
-                                </a>
+    <div class="d-flex justify-content-center flex-wrap">
+        @foreach (var m in Model)
+        {
 
-                            </h6>
-                            <div class="card-text d-flex justify-content-between">
-                                <small class="text-muted">@m.ReleasedDate.Year</small>
-                                <small class="text-muted">@m.Duration</small>
-                              @*  @foreach(var g in m.MovieGenres)
-                                {
-                                    <small class="text-muted">@g.Genre.GenreName</small>
-                                }*@
-                                <small class="text-muted">Movie</small>
-                            </div>
+            <div class="main-box mb-2 mx-2">
 
+                <div class="card">
+                    <div class="carousel-item active">
+                        <img src="~/Images/@m.CoverImage" class="card-img-top" alt="...">
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <a asp-action="Details" asp-route-id="@m.MovieId" style="text-decoration:none;">
+                                @m.Title
+                            </a>
+
+                        </h6>
+                        <div class="card-text d-flex justify-content-between">
+                            <small class="text-muted">@m.ReleasedDate.Year</small>
+                            <small class="text-muted">@m.Duration</small>
+                            @*  @foreach(var g in m.MovieGenres)
+                        {
+                        <small class="text-muted">@g.Genre.GenreName</small>
+                        }*@
+                            <small class="text-muted">Movie</small>
                         </div>
+
                     </div>
                 </div>
-            }
 
-        </div>
+
+            </div>
+        }
     </div>
 </div>
