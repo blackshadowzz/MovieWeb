@@ -1,0 +1,37 @@
+﻿@model MoviesWebApp.Models.Studio
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["TitleForm"] = "Studio Detail";
+    ViewData["SubNavbar"] = "studio";
+}
+
+
+
+<div>
+    <dl class="row">
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Revenue)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Revenue)
+        </dd>
+    </dl>
+</div>
+<div class="d-flex justify-content-between mt-4">
+    <a asp-action="Edit" class="btn btn-outline-primary" asp-route-id="@Model?.StudioId">Edit</a> 
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>

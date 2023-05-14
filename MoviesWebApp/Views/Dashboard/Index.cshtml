@@ -1,8 +1,44 @@
-﻿
+﻿@model IEnumerable<MoviesWebApp.Models.Movie>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ViewData["TitleForm"] = "Dashboard";
+    ViewData["SubNavbar"] = "dashboard";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-center flex-wrap">
+    @foreach (var m in Model)
+    {
+
+        <div class="main-box mb-2 mx-2">
+
+            <div class="card">
+                <div class="carousel-item active">
+                    <img src="~/Images/@m.CoverImage" class="card-img-top" alt="...">
+                </div>
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <a asp-action="Details" asp-route-id="@m.MovieId" style="text-decoration:none;">
+                            @m.Title
+                        </a>
+
+                    </h6>
+                    <div class="card-text d-flex justify-content-between">
+                        <small class="text-muted">@m.ReleasedDate.Year</small>
+                        <small class="text-muted">@m.Duration</small>
+                        @*  @foreach(var g in m.MovieGenres)
+                    {
+                    <small class="text-muted">@g.Genre.GenreName</small>
+                    }*@
+                        <small class="text-muted">Movie</small>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    }
+</div>
 

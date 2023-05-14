@@ -12,7 +12,7 @@ namespace MoviesWebApp.Models
         [StringLength(150,MinimumLength =3,ErrorMessage ="Must be 3 charactors up!")]
         [Column(TypeName =("nvarchar(150)"))]
         public string Title { get; set; }
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
         public DateTime ReleasedDate { get; set; }
         public MovieLanguage? Language { get; set; }

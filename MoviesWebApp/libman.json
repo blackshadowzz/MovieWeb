@@ -7,15 +7,6 @@
       "destination": "wwwroot/admin-lte/"
     },
     {
-      "library": "font-awesome@6.4.0",
-      "destination": "wwwroot/font-awesome/",
-      "files": [
-        "css/all.min.css",
-        "css/all.css",
-        "js/all.min.js"
-      ]
-    },
-    {
       "library": "jquery@3.6.4",
       "destination": "wwwroot/jquery/",
       "files": [
@@ -34,6 +25,10 @@
         "js/select2.full.min.js",
         "js/select2.js"
       ]
+    },
+    {
+      "library": "font-awesome@6.4.0",
+      "destination": "wwwroot/font-awesome/"
     }
   ]
 }

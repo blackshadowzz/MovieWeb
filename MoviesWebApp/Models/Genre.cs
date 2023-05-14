@@ -8,8 +8,9 @@ namespace MoviesWebApp.Models
     {
         [Key]
         public int GenreID { get; set; }
+        [Required]
         [Column(TypeName = ("nvarchar(50)"))]
-        public string? GenreName { get; set; }
+        public string GenreName { get; set; }
 
         public ICollection<MovieGenre>? MovieGenres { get; set; }
     }
