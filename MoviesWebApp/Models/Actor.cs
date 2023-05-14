@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MoviesWebApp.Models
 {
+    
     public class Actor
     {
         [Key]
@@ -29,7 +30,8 @@ namespace MoviesWebApp.Models
         public string? Description { get; set; }
 
       
-        public ICollection<MovieActor>? MovieActors { get; set; }
+        public ICollection<MovieActor>? MovieActors { get; set; } 
+
     }
 
 }

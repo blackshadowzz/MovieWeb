@@ -19,7 +19,6 @@ namespace MoviesWebApp.Controllers
             _context = context;
         }
 
-        // GET: Actors
         public async Task<IActionResult> Index()
         {
               return _context.Actors != null ? 
@@ -27,7 +26,6 @@ namespace MoviesWebApp.Controllers
                           Problem("Entity set 'MovieDbContext.Actors'  is null.");
         }
 
-        // GET: Actors/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.Actors == null)
@@ -44,16 +42,10 @@ namespace MoviesWebApp.Controllers
 
             return View(actor);
         }
-
-        // GET: Actors/Create
         public IActionResult Create()
         {
             return View();
         }
-
-        // POST: Actors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ActorID,FirstName,LastName,Gender,DateOfBirth,Phone,Email,Role,Address,Description")] Actor actor)
@@ -67,8 +59,6 @@ namespace MoviesWebApp.Controllers
             }
             return View(actor);
         }
-
-        // GET: Actors/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.Actors == null)
@@ -83,10 +73,6 @@ namespace MoviesWebApp.Controllers
             }
             return View(actor);
         }
-
-        // POST: Actors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("ActorID,FirstName,LastName,Gender,DateOfBirth,Phone,Email,Role,Address,Description")] Actor actor)
@@ -118,8 +104,6 @@ namespace MoviesWebApp.Controllers
             }
             return View(actor);
         }
-
-        // GET: Actors/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.Actors == null)
@@ -136,8 +120,6 @@ namespace MoviesWebApp.Controllers
 
             return View(actor);
         }
-
-        // POST: Actors/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
