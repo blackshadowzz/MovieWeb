@@ -33,5 +33,10 @@ namespace MoviesWebApp.Models
         public ICollection<MovieActor>? MovieActors { get; set; } 
 
     }
+    public enum Genders
+    {
+        Male,
+        Female
+    }
 
 }

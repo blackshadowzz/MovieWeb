@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace MoviesWebApp.Models
 {
@@ -29,11 +30,10 @@ namespace MoviesWebApp.Models
 
         public ICollection<MovieDirector>? MovieDirectors { get; set; }
     }
-    public enum Genders
-    {
-        Male,
-        Female,
-        Others
-    }
+    //public enum Genders
+    //{
+    //    Male,
+    //    Female
+    //}
 
 }
